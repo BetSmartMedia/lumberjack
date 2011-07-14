@@ -45,6 +45,10 @@ daemon.daemonize config.log_file, config.pid_file, (err, pid) ->
 
 	server.on "message", (msg, rinfo) ->
 		#console.log "recv: #{msg} from #{rinfo.address}:#{rinfo.port}"
+
+		# LJ's wire protocol is simple. There are 4 strings, delimited with NUL characters (\0).
+		#
+		# <host>\0<facility>\0<priority>\0<message>
 		try
 			parts = msg.toString("utf8").split "\0"
 		catch e
