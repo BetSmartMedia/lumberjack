@@ -1,7 +1,7 @@
 ## LumberJack: Taming the logs
 
-LumberJack is a very simple network-based log aggregator written in NodeJS. It listens on
-a UDP port and logs messages to a SQLite3 database.
+LumberJack is a very simple network-based log aggregator written in CoffeeScript for
+NodeJS. It listens on a UDP port and logs messages to a SQLite3 database.
 
 It also comes bundled with a very simple log viewer written in PHP. You are encouraged to
 write better viewers (in better languages). If you do, please let me know so I can use it. :)
