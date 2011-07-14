@@ -1,0 +1,1 @@
+- catch SIGTERM and remove PID file
