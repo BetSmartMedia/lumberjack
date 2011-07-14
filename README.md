@@ -1,3 +1,5 @@
+![LumberJack](http://nightlifedenver.com/images/2/media/2010/10/12/lumberjack.jpg)
+
 ## LumberJack: Taming the logs
 
 LumberJack is a very simple network-based log aggregator written in CoffeeScript for
