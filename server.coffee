@@ -34,8 +34,14 @@ catch e
 
 # Become a daemon
 daemon.daemonize config.log_file, config.pid_file, (err, pid) ->
-	return console.log "Error starting daemon: #{err}" if err
+	return console.log "Error starting daemon: #{err}" if err?
 	console.log "Daemon started"
+
+	# catch SIGTERM and remove PID file
+	process.on 'SIGTERM', ->
+		console.log "Caught SIGTERM; shutting down"
+		fs.unlinkSync config.pid_file
+		process.exit 0
 
 	db = new sqlite.Database config.db_path
 
@@ -66,9 +72,16 @@ daemon.daemonize config.log_file, config.pid_file, (err, pid) ->
 			parts[1] || "general",
 			parts[2] || "info",
 			parts[3],
-			parseInt( (new Date).getTime() / 1000 )
+			parseInt (new Date).getTime() / 1000
 		]
-		db.run sql, data
+
+		# retry until success
+		insert = ->
+			db.run sql, data, (err) ->
+				return unless err?
+				console.log err.message, "(retrying in 1 second)"
+				setTimeout insert 1000
+		insert()
 
 	server.bind config.listen_port, config.listen_ip
 
