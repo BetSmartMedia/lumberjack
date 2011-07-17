@@ -127,7 +127,7 @@ $databases = array_map(function($v) {
 
 	<script type="text/javascript">
 		var refresh_timer;
-		var db = '<?php echo $databases[0] ?>';
+		var project = '<?php echo $databases[0] ?>';
 
 		var fetch = function() {
 			var colors = {
@@ -137,7 +137,7 @@ $databases = array_map(function($v) {
 				error:   '#ff3300'
 			}
 
-			var params = {db: db};
+			var params = {db: project};
 			$('.filter').each(function(){
 				params[$(this).attr('name')] = $(this).val();
 			});
