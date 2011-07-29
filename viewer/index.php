@@ -14,7 +14,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		die(json_encode(array('fail'=>"Invalid DB: $dbfn")));
 	}
 
-	$dbh = new PDO('sqlite:' . DB_ROOT . '/' . $dbfn . '.sq3');
+	try {
+		$dbh = new PDO('sqlite:' . DB_ROOT . '/' . $dbfn . '.sq3');
+	} catch (Exception $e) {
+		die(json_encode(array('fail'=>'Cannot connect to database: ' . $e->getMessage())));
+	}
 	$sql = "SELECT * FROM log_messages WHERE 1=1";
 	$args = array();
 
@@ -158,7 +162,7 @@ $databases = array_map(function($v) {
 						.replace(/  /g, ' &nbsp;');
 
 					$row = $('<tr></tr>');
-					$row.append('<td>' + d.format('UTC:yyyy-mm-dd hh:MM:ss') + '</td>');
+					$row.append('<td>' + d.format('UTC:yyyy-mm-dd HH:MM:ss') + '</td>');
 					$row.append('<td>' + v.host + '</td>');
 					$row.append('<td>' + v.facility + '</td>');
 					$row.append('<td>' + v.priority + '</td>');
