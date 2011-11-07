@@ -19,6 +19,10 @@ cfgfile = process.argv[2]
 try
 	cfgjson = fs.readFileSync cfgfile
 	config = JSON.parse cfgjson
+
+	# Defaults
+	config.ignore_facilities ?= []
+	config.ignore_priorities ?= []
 catch e
 	console.log "Error reading/parsing config:", e.message
 	process.exit 1
@@ -64,6 +68,10 @@ daemon.daemonize config.log_file, config.pid_file, (err, pid) ->
 		if not parts[3]
 			#console.log "Log message is empty, ignoring..."
 			return
+
+		# Scrub against the ignore lists
+		return if parts[1] in config.ignore_facilities
+		return if parts[2] in config.ignore_priorities
 
 		sql = "INSERT INTO log_messages (ip,host,facility,priority,message,created_on) VALUES (?,?,?,?,?,?)"
 		data = [

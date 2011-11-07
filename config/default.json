@@ -4,5 +4,8 @@
 
 	"db_path":     "db/default.sq3",
 	"pid_file":    "run/default.pid",
-	"log_file":    "log/default.log"
+	"log_file":    "log/default.log",
+
+	"ignore_facilities": [],
+	"ignore_priorities": []
 }
